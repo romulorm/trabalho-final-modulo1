@@ -57,10 +57,10 @@ def create_user(usuario: Usuario):
     """ Rota de cadastrar usuários """
     usuario_existente = [user for user in bd_usuarios if user.email == usuario.email]
     if usuario_existente:
-      return JSONResponse(status_code=400, content="Usuário já existe com esse e-mail!")
+      return JSONResponse(status_code=400, content=f"Já possui um usuário cadastrado com o e-mail {usuario.email}")
     else:
         bd_usuarios.append(usuario)
-        return JSONResponse(status_code=200, content="Usuário cadastrado com sucesso!")
+        return JSONResponse(status_code=200, content=f"Usuário {usuario.nome} cadastrado com sucesso!")    
 
 
 

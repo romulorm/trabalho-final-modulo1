@@ -66,8 +66,8 @@ pip install -r requirements.txt
 ```
 
 ### 3. Inicie a aplicação
-Na pasta **trabalho-final-modulo1** execute:
 ```bash
+cd trabalho-final-modulo1
 uvicorn src.api.main:app --port 8001
 ```
 
