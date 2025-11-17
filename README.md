@@ -71,7 +71,6 @@ uvicorn api.main:app --port 8001
 
 ## ✅ Teste a aplicação
 ```bash
-cd ..
-cd tests
-pytest -v
+cd src
+python -m pytest
 ```

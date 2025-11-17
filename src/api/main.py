@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import EmailStr
-from models.usuario import Usuario
+from src.models.usuario import Usuario
 
 
 app = FastAPI(
