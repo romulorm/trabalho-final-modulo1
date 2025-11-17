@@ -1,0 +1,29 @@
+Usuários de teste para inserir no banco de dados em memória
+
+{
+  "nome": "José Amaral",
+  "email": "j.amaral@gmail.com",
+  "idade": 40,
+  "ativo": true
+}
+
+{
+  "nome": "Léo Cavalcanteda",
+  "email": "leo.cavalcante@gmail.com",
+  "idade": 30,
+  "ativo": false
+}
+
+{
+  "nome": "Tânia Pereira",
+  "email": "taniapereira@gmail.com",
+  "idade": 35,
+  "ativo": true
+}
+
+{
+  "nome": "Márcia Maria",
+  "email": "marciamaria@gmail.com",
+  "idade": 23,
+  "ativo": false
+}
