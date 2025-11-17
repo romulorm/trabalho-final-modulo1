@@ -18,11 +18,20 @@ app = FastAPI(
 
 app.mount("/static", StaticFiles(directory="src/static"), name="static")
 
-favicon_path = 'static/favicon.ico'
+favicon_path = 'src/static/favicon.ico'
 
 @app.get('/favicon.ico', include_in_schema=False)
 async def favicon():
     return FileResponse(favicon_path)
+
+
+@app.get("/health", summary="Rota de saúde da API", description="Retorna uma mensagem de status se estiver em funcionamento.")
+def get_health():
+    """ Rota de saúde da API """
+    return {"status": "healthy"}
+
+# Instancia o banco de dados de usuários na memória
+bd_usuarios = []
 
 
 @app.get("/", summary="Rota padrão da API", description="Retorna uma mensagem se estiver em funcionamento.")
