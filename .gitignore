@@ -43,6 +43,7 @@ venv.bak/
 htmlcov/
 *.cover
 .hypothesis/
+.pytest.ini
 
 # Logs
 *.log

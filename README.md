@@ -48,10 +48,17 @@ git clone https://github.com/romulorm/trabalho-final-modulo1.git
 cd trabalho-final-modulo1
 ```
 ### 2. Crie e ative o ambiente virtual
+- No Linux
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
+- No Windows
+```bash
+python -m venv .venv
+.\.venv/bin/activate
+```
+
 
 ### 3. Instale as dependências
 ```bash
@@ -59,8 +66,8 @@ pip install -r requirements.txt
 ```
 
 ### 3. Inicie a aplicação
+Na pasta **trabalho-final-modulo1** execute:
 ```bash
-cd trabalho-final-modulo1
 uvicorn src.api.main:app --port 8001
 ```
 
@@ -72,5 +79,5 @@ uvicorn src.api.main:app --port 8001
 ## ✅ Teste a aplicação
 ```bash
 cd trabalho-final-modulo1
-python -m pytest
+pytest
 ```
