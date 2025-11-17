@@ -1,5 +1,6 @@
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import EmailStr
 from models.usuario import Usuario
 
@@ -13,6 +14,15 @@ app = FastAPI(
         "email": "support@usersapi.com",
     },
 )
+
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+favicon_path = 'static/favicon.ico'
+
+@app.get('/favicon.ico', include_in_schema=False)
+async def favicon():
+    return FileResponse(favicon_path)
 
 
 @app.get("/", summary="Rota padrão da API", description="Retorna uma mensagem se estiver em funcionamento.")
