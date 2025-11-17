@@ -16,7 +16,7 @@ app = FastAPI(
 )
 
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory="src/static"), name="static")
 
 favicon_path = 'static/favicon.ico'
 

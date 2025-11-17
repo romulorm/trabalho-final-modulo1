@@ -60,8 +60,8 @@ pip install -r requirements.txt
 
 ### 3. Inicie a aplicação
 ```bash
-cd src
-uvicorn api.main:app --port 8001
+cd trabalho-final-modulo1
+uvicorn src.api.main:app --port 8001
 ```
 
 ## 🚀 Acesso ao Swagger do sistema
@@ -71,6 +71,6 @@ uvicorn api.main:app --port 8001
 
 ## ✅ Teste a aplicação
 ```bash
-cd src
+cd trabalho-final-modulo1
 python -m pytest
 ```
