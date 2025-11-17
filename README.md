@@ -13,7 +13,7 @@
 - VS Code (recomendado)
 - Conta no GitHub
 
-## 📂 Estrutura do Repositório
+## 📂 Estrutura do Repositório local
 
 ```
 trabalho-final-modulo1/
