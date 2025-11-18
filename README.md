@@ -1,5 +1,10 @@
 # Trabalho final do Módulo 1
 
+## 🧑🏻‍💻 INTEGRANTES DO GRUPO
+- Rômulo...
+- Luiz Eduardo Paes Salomão
+- Felipe...
+
 ## 🎯 Desenvolver uma API contendo:
 - **Organização**: Código limpo, estruturado, PEP 8
 - **API funcionando**: Endpoints rodando, validação Pydantic
@@ -80,4 +85,5 @@ uvicorn src.api.main:app --port 8001
 ```bash
 cd trabalho-final-modulo1
 pytest
+
 ```
