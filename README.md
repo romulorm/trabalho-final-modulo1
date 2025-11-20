@@ -7,7 +7,7 @@
 
 ## 🎯 Objetivo do Projeto
 ### Descrição
-Criação de uma API para cadastro, listagem e busca de usuários.
+Criação de uma API em FastAPI para cadastro, listagem e busca de usuários.
 
 ### ☕ A API deve conter:
 - **Organização**: Código limpo, estruturado, PEP 8
@@ -83,9 +83,12 @@ uvicorn src.api.main:app --port 8001
 ## 🚀 Acesso ao Swagger do sistema
 
 ### 1. Abra o navegador de Internet
-Acesse o endereço eletrônico http://127.0.0.1:8001/docs
+Acesse o endereço eletrônico http://127.0.0.1:8001/docs para testar os endpoints.
 
 ## ✅ Teste a aplicação
+
+Execute os comandos abaixo para testar a aplicação utilizando o Pytest.
+
 ```bash
 cd trabalho-final-modulo1
 ```
