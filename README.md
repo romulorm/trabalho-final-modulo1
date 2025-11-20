@@ -1,9 +1,9 @@
 # Trabalho final do Módulo 1
 
 ## 🧑🏻‍💻 INTEGRANTES DO GRUPO
-- Rômulo...
+- Filipe Ribeiro de Oliveira
 - Luiz Eduardo Paes Salomão
-- Felipe...
+- Rômulo Ribeiro Moreira
 
 ## 🎯 Desenvolver uma API contendo:
 - **Organização**: Código limpo, estruturado, PEP 8
@@ -84,6 +84,18 @@ uvicorn src.api.main:app --port 8001
 ## ✅ Teste a aplicação
 ```bash
 cd trabalho-final-modulo1
-pytest
+```
+### No Linux/macOS:
+```bash
+PYTHONPATH=. pytest
+```
 
+### No Windows (Command Prompt):
+```bash
+set PYTHONPATH=. && pytest
+```
+
+### No Windows (PowerShell):
+```bash
+$env:PYTHONPATH='.' ; pytest
 ```
