@@ -37,7 +37,7 @@ bd_usuarios = []
 @app.get("/", summary="Rota padrão da API", description="Retorna uma mensagem se estiver em funcionamento.")
 def home():
     """ Rota padrão da API """
-    return {"message": "API em funcionamento!"}
+    return {"status": "running", "versao": "1.0.0"}
 
 # Instancia o banco de dados de usuários na memória
 bd_usuarios = []

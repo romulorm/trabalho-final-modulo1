@@ -87,15 +87,15 @@ cd trabalho-final-modulo1
 ```
 ### No Linux/macOS:
 ```bash
-PYTHONPATH=. pytest
+PYTHONPATH=. pytest -v -rP
 ```
 
 ### No Windows (Command Prompt):
 ```bash
-set PYTHONPATH=. && pytest
+set PYTHONPATH=. && pytest -v -rP
 ```
 
 ### No Windows (PowerShell):
 ```bash
-$env:PYTHONPATH='.' ; pytest
+$env:PYTHONPATH='.' ; pytest -v -rP
 ```

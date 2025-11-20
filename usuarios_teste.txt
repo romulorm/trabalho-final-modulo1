@@ -8,7 +8,7 @@ Usuários de teste para inserir no banco de dados em memória
 }
 
 {
-  "nome": "Léo Cavalcanteda",
+  "nome": "Léo Cavalcante",
   "email": "leo.cavalcante@gmail.com",
   "idade": 30,
   "ativo": false
