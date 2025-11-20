@@ -1,11 +1,15 @@
 # Trabalho final do Módulo 1
 
-## 🧑🏻‍💻 INTEGRANTES DO GRUPO
+## 🧑🏻‍💻 Integrantes do grupo
 - Filipe Ribeiro de Oliveira
 - Luiz Eduardo Paes Salomão
 - Rômulo Ribeiro Moreira
 
-## 🎯 Desenvolver uma API contendo:
+## 🎯 Objetivo do Projeto
+### Descrição
+Criação de uma API para cadastro, listagem e busca de usuários.
+
+### ☕ A API deve conter:
 - **Organização**: Código limpo, estruturado, PEP 8
 - **API funcionando**: Endpoints rodando, validação Pydantic
 - **Testes**: Cobertura, casos válidos/inválidos
@@ -79,23 +83,23 @@ uvicorn src.api.main:app --port 8001
 ## 🚀 Acesso ao Swagger do sistema
 
 ### 1. Abra o navegador de Internet
-### 2. Acesse o endereço eletrônico http://127.0.0.1:8001/docs
+Acesse o endereço eletrônico http://127.0.0.1:8001/docs
 
 ## ✅ Teste a aplicação
 ```bash
 cd trabalho-final-modulo1
 ```
-### No Linux/macOS:
+No Linux/macOS:
 ```bash
 PYTHONPATH=. pytest -v -rP
 ```
 
-### No Windows (Command Prompt):
+No Windows (Command Prompt):
 ```bash
 set PYTHONPATH=. && pytest -v -rP
 ```
 
-### No Windows (PowerShell):
+No Windows (PowerShell):
 ```bash
 $env:PYTHONPATH='.' ; pytest -v -rP
 ```
