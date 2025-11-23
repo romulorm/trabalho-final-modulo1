@@ -47,10 +47,22 @@ def test_cad_usuario_valido():
 
     
 
-def test_cad_usuario_email_invalido():
+
+def test_cadastro_usuario_email_invalido():
     """
-    Teste: Tentativa de cadastro de usuário com e-mail inválido.
+    Teste: cadastro com e-mail com formato inválido deve retornar 422.
+    Validação feita automaticamente pelo Pydantic (EmailStr).
     """
-    response = client.get("/usuario/procurar/nao_existe@example.com")
-    assert response.status_code == 404
-    assert "não encontrado" in response.json().lower()
+    payload = {
+        "nome": "Usuário Teste",
+        "email": "email-invalido",   # sem @ e domínio
+        "idade": 25,
+        "ativo": True
+    }
+
+    response = client.post("/usuario/cadastro", json=payload)
+
+    assert response.status_code == 422
+    # Verifica se o erro reportado é de e-mail inválido
+    assert "email" in response.text.lower()
+
