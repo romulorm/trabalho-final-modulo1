@@ -46,8 +46,7 @@ htmlcov/
 .pytest.ini
 
 # Logs
-*.log
-logs/
+logs/*.log
 
 # Database
 *.db
@@ -77,3 +76,4 @@ tmp/
 temp/
 *.tmp
 *.bak
+
