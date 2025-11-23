@@ -4,6 +4,7 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import EmailStr
+import os
 import logging
 from src.models.usuario import Usuario
 
@@ -49,6 +50,10 @@ formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s
 
 stream_handler = logging.StreamHandler(sys.stdout)
 stream_handler.setFormatter(formatter)
+
+# Garantir que existe a pasta /logs
+os.makedirs("logs", exist_ok=True)
+
 file_handler = logging.FileHandler("logs/logs.log")
 file_handler.setFormatter(formatter)
 
@@ -134,3 +139,4 @@ def find_user(email_id: EmailStr):
         logger.info("Nenhum usuário encontrado com o email %s", email_id)
         return JSONResponse(status_code=404, content="Usuário não encontrado com este e-mail")
     
+
