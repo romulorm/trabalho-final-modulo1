@@ -33,44 +33,24 @@ def test_cad_usuario_valido():
     """
     Teste: Cadastro de usuário válido.
     """
-    # ARRANGE (Preparar)
     payload = {
-        "valor": 15000,  # Acima do threshold
-        "hora_do_dia": 14,
-        "distancia_ultima_compra_km": 50,
-        "numero_transacoes_hoje": 3,
-        "idade_conta_dias": 100
+        "nome": "João da Silva",
+        "email": "joao.silva@example.com",
+        "idade": 30,
+        "ativo": True
     }
-    
-    # ACT (Agir)
-    response = client.post("/usuario/cadastro", json=payload)
-    
-    # ASSERT (Verificar)
-    assert response.status_code == 200
-    data = response.json()
-    assert data["fraude"] == True  # ESPECIFICAÇÃO: > 10k = fraude
-    assert data["confianca"] > 0.5
-    assert "threshold" in data["motivo"].lower()
 
+    response = client.post("/usuario/cadastro", json=payload)
+
+    assert response.status_code == 200
+    assert "cadastrado com sucesso" in response.json().lower()
+
+    
 
 def test_cad_usuario_email_invalido():
     """
     Teste: Tentativa de cadastro de usuário com e-mail inválido.
     """
-    # ARRANGE
-    payload = {
-        "valor": 500,  # Abaixo do threshold
-        "hora_do_dia": 14,
-        "distancia_ultima_compra_km": 10,
-        "numero_transacoes_hoje": 2,
-        "idade_conta_dias": 100
-    }
-    
-    # ACT
-    response = client.post("/usuario/cadastro", json=payload)
-    
-    # ASSERT
-    assert response.status_code == 200
-    data = response.json()
-    assert data["fraude"] == False
-    assert data["confianca"] > 0.5
+    response = client.get("/usuario/procurar/nao_existe@example.com")
+    assert response.status_code == 404
+    assert "não encontrado" in response.json().lower()
