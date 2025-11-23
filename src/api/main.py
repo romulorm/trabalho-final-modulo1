@@ -1,9 +1,15 @@
+import sys
 from fastapi import FastAPI
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import EmailStr
+import logging
 from src.models.usuario import Usuario
 
+# -----------------------------
+# FASTAPI configuration
+# -----------------------------
 
 app = FastAPI(
     title="Exercício - API de Usuários",
@@ -15,10 +21,53 @@ app = FastAPI(
     },
 )
 
+# -----------------------------
+# CORS configuration
+# -----------------------------
+
+origins = [
+    "http://localhost:3000",      # Exemplo para um frontend Vue/React/Angular local
+    "http://localhost:5173",
+]
+
+# 2. Adicione o Middleware à sua aplicação
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,          # Permite estas origens específicas
+    allow_credentials=True,         # Permite cookies e cabeçalhos de autorização (Bearer Tokens)
+    allow_methods=["*"],            # Permite todos os métodos HTTP (GET, POST, PUT, DELETE, etc.)
+    allow_headers=["*"],            # Permite todos os cabeçalhos HTTP
+)
+
+# -----------------------------
+# LOGGING configuration
+# -----------------------------
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s")
+
+stream_handler = logging.StreamHandler(sys.stdout)
+stream_handler.setFormatter(formatter)
+file_handler = logging.FileHandler("logs/logs.log")
+file_handler.setFormatter(formatter)
+
+logger.addHandler(stream_handler)
+logger.addHandler(file_handler)
+
+logger.info('****************** API Started *****************')
+
+# -----------------------------
+# FAVICON configuration
+# -----------------------------
 
 app.mount("/static", StaticFiles(directory="src/static"), name="static")
-
 favicon_path = 'src/static/favicon.ico'
+
+# -----------------------------
+# ROUTES configuration
+# -----------------------------
+
 
 @app.get('/favicon.ico', include_in_schema=False)
 async def favicon():
@@ -30,11 +79,8 @@ def get_health():
     """ Rota de saúde da API """
     return {"status": "healthy"}
 
-# Instancia o banco de dados de usuários na memória
-bd_usuarios = []
 
-
-@app.get("/", summary="Rota padrão da API", description="Retorna uma mensagem se estiver em funcionamento.")
+@app.get("/", summary="Rota padrão da API", description="Retorna o status e versão da API.")
 def home():
     """ Rota padrão da API """
     return {"status": "running", "versao": "1.0.0"}
@@ -42,8 +88,7 @@ def home():
 # Instancia o banco de dados de usuários na memória
 bd_usuarios = []
 
-
-
+# Rota de listar usuários
 @app.get("/usuarios", summary="Listar usuários", description="Retorna todos os usuários cadastrados no banco de dados.",
       responses = {
           404: {"description": "Sem usuários cadastrados"}
@@ -56,7 +101,7 @@ def get_users():
         return bd_usuarios
 
 
-
+# Rota de cadastrar usuários
 @app.post("/usuario/cadastro", summary="Cadastrar usuário", description="Cadastra um usuário no banco de dados.",
       responses = {
           200: {"description": "Usuário cadastrado com sucesso."},
@@ -69,10 +114,11 @@ def create_user(usuario: Usuario):
       return JSONResponse(status_code=400, content=f"Já possui um usuário cadastrado com o e-mail {usuario.email}")
     else:
         bd_usuarios.append(usuario)
-        return JSONResponse(status_code=200, content=f"Usuário {usuario.nome} cadastrado com sucesso!")    
+        logger.info("Usuário %s cadastrado com sucesso!", usuario.nome)
+        return JSONResponse(status_code=200, content=f"Usuário {usuario.nome} cadastrado com sucesso!")
 
 
-
+# Rota de procurar usuários
 @app.get("/usuario/procurar/{email_id}", summary="Procurar usuário", description="Retorna um único usuário pelo seu e-mail.",
         responses = {
             404: {"description": "Item not found"}
@@ -85,5 +131,6 @@ def find_user(email_id: EmailStr):
     if usuario_localizado:
         return usuario_localizado
     else:
+        logger.info("Nenhum usuário encontrado com o email %s", email_id)
         return JSONResponse(status_code=404, content="Usuário não encontrado com este e-mail")
     
