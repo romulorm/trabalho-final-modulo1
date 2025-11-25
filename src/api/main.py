@@ -44,21 +44,11 @@ app.add_middleware(
 # LOGGING configuration
 # -----------------------------
 
+# Configure logging to a file
+logging.basicConfig(filename='logs/app.log', level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
+ 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s")
-
-stream_handler = logging.StreamHandler(sys.stdout)
-stream_handler.setFormatter(formatter)
-
-# Garantir que existe a pasta /logs
-os.makedirs("logs", exist_ok=True)
-
-file_handler = logging.FileHandler("logs/logs.log")
-file_handler.setFormatter(formatter)
-
-logger.addHandler(stream_handler)
-logger.addHandler(file_handler)
 
 logger.info('****************** API Started *****************')
 
