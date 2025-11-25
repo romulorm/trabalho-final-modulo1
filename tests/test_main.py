@@ -62,7 +62,10 @@ def test_cadastro_usuario_email_invalido():
 
     response = client.post("/usuario/cadastro", json=payload)
 
+    error_response = response.json()
     assert response.status_code == 422
-    # Verifica se o erro reportado é de e-mail inválido
-    assert "email" in response.text.lower()
+    assert "detail" in error_response
+    assert len(error_response["detail"]) == 1
+    error_detail = error_response["detail"][0]
+    assert "value is not a valid email address" in error_detail["msg"]
 
