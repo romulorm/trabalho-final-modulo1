@@ -107,6 +107,11 @@ No Windows (PowerShell):
 $env:PYTHONPATH='.' ; pytest -v -rP
 ```
 
+## 🐳 Docker
+```bash
+docker build -t trab-mod1-backend:latest .
+docker run -p 8001:8001 trab-mod1-backend:latest
+```
 
 ## 👀 Frontend da aplicação
 https://github.com/romulorm/trabalho-final-modulo1-frontend.git
