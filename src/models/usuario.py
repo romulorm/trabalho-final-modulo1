@@ -1,10 +1,12 @@
-from pydantic import BaseModel, Field, EmailStr
+from sqlmodel import SQLModel, Field
+from typing import Optional
 
-class Usuario(BaseModel):
-    nome: str = Field(..., min_length=3, description="Nome do usuário")
-    email: EmailStr = Field(..., description="E-mail do usuário")
-    idade: int = Field(..., ge=18, le=100, description="Idade do usuário")
-    ativo: bool = Field(default=True, description="Usuário ativo?")
+class Usuario(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True, description="ID do usuário")
+    nome: str = Field(index=True, description="Nome do usuário")
+    email: str = Field(index=True, unique=True, description="E-mail do usuário")
+    idade: int = Field(default=18, description="Idade do usuário")
+    ativo: int = Field(default=1, description="Status de atividade do usuário")
 
     model_config = {
         "json_schema_extra": {

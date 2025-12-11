@@ -1,16 +1,26 @@
-import sys
 from fastapi import FastAPI
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import EmailStr
-import os
-import logging
+from contextlib import asynccontextmanager
+from src.utils.database import create_db
 from src.models.usuario import Usuario
+import logging
 
 # -----------------------------
 # FASTAPI configuration
 # -----------------------------
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Code to run on startup
+    create_db()
+    yield
+    # Code to run on shutdown
+    print("Application shutting down...")
+    logger.info("Application shutting down...")
+
 
 app = FastAPI(
     title="Exercício - API de Usuários",
@@ -20,6 +30,7 @@ app = FastAPI(
         "name": "API Support",
         "email": "support@usersapi.com",
     },
+    lifespan=lifespan
 )
 
 # -----------------------------
@@ -59,6 +70,7 @@ logger.info('****************** API Started *****************')
 app.mount("/static", StaticFiles(directory="src/static"), name="static")
 favicon_path = 'src/static/favicon.ico'
 
+
 # -----------------------------
 # ROUTES configuration
 # -----------------------------
@@ -80,8 +92,6 @@ def home():
     """ Rota padrão da API """
     return {"status": "running", "versao": "1.0.0"}
 
-# Instancia o banco de dados de usuários na memória
-bd_usuarios = []
 
 # Rota de listar usuários
 @app.get("/usuarios", summary="Listar usuários", description="Retorna todos os usuários cadastrados no banco de dados.",
@@ -90,10 +100,7 @@ bd_usuarios = []
 } )
 def get_users():
     """ Rota para retornar todos os usuários """
-    if len(bd_usuarios) == 0:
-        return JSONResponse(status_code=404, content="Sem usuários cadastrados")
-    else:
-        return bd_usuarios
+    return {"message": "Rota para listar usuários"}
 
 
 # Rota de cadastrar usuários
@@ -104,13 +111,7 @@ def get_users():
 } )
 def create_user(usuario: Usuario):
     """ Rota de cadastrar usuários """
-    usuario_existente = [user for user in bd_usuarios if user.email == usuario.email]
-    if usuario_existente:
-      return JSONResponse(status_code=400, content=f"Já possui um usuário cadastrado com o e-mail {usuario.email}")
-    else:
-        bd_usuarios.append(usuario)
-        logger.info("Usuário %s cadastrado com sucesso!", usuario.nome)
-        return JSONResponse(status_code=200, content=f"Usuário {usuario.nome} cadastrado com sucesso!")
+    return {"message": "Rota para criar usuários"}
 
 
 # Rota de procurar usuários
@@ -122,11 +123,6 @@ def find_user(email_id: EmailStr):
     """
         Rota para procurar usuário. Insira o e-mail do usuário que deseja buscar.
     """
-    usuario_localizado = [usuario for usuario in bd_usuarios if usuario.email == email_id]
-    if usuario_localizado:
-        return usuario_localizado
-    else:
-        logger.info("Nenhum usuário encontrado com o email %s", email_id)
-        return JSONResponse(status_code=404, content="Usuário não encontrado com este e-mail")
+    return {"message": "Rota para procurar usuário"}
     
 
