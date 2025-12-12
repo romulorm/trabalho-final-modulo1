@@ -7,16 +7,3 @@ class Usuario(SQLModel, table=True):
     email: str = Field(index=True, unique=True, description="E-mail do usuário")
     idade: int = Field(default=18, description="Idade do usuário")
     ativo: int = Field(default=1, description="Status de atividade do usuário")
-
-    model_config = {
-        "json_schema_extra": {
-            "examples": [
-                {
-                    "nome": "Jane Doe",
-                    "email": "jane.doe@example.com",
-                    "idade": 35,
-                    "ativo": True
-                }
-            ]
-        }
-    }
