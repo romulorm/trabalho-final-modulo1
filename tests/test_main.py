@@ -26,7 +26,7 @@ def test_root():
     assert response.status_code == 200
     data = response.json()
     assert "status" in data
-    assert "versao" in data
+    assert "version" in data
 
 
 def test_cad_usuario_valido():
@@ -40,10 +40,10 @@ def test_cad_usuario_valido():
         "ativo": True
     }
 
-    response = client.post("/usuario/cadastro", json=payload)
+    response = client.post("/usuarios/cadastro", json=payload)
 
     assert response.status_code == 200
-    assert "cadastrado com sucesso" in response.json().lower()
+    assert "cadastrado com sucesso" in response.json()
 
     
 
@@ -60,7 +60,7 @@ def test_cadastro_usuario_email_invalido():
         "ativo": True
     }
 
-    response = client.post("/usuario/cadastro", json=payload)
+    response = client.post("/usuarios/cadastro", json=payload)
 
     error_response = response.json()
     assert response.status_code == 422
