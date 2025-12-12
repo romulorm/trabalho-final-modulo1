@@ -22,18 +22,29 @@ def get_users():
         return usuarios
 
 
-# Rota de cadastrar usuários
+
+# Rota de cadastrar usuário
 @router.post("/usuarios/cadastro", summary="Cadastrar usuário", description="Cadastra um usuário no banco de dados.",
       responses = {
           200: {"description": "Usuário cadastrado com sucesso."},
           400: {"description": "Bad request: Usuário já existe!"},
+          422: {"description": "Bad request: Erro de validação do e-mail!"},
 } )
 def create_user(usuario: Usuario):
     """ Rota de cadastrar usuários """
     with Session(engine) as session:
-        session.add(usuario)
-        session.commit()
-        return {"message": "Usuário criado"}
+        # Verifica se o usuário existe
+        statement = select(Usuario).where(Usuario.email == usuario.email)
+        results = session.exec(statement)
+        usuario_existente = results.first()
+        if usuario_existente:
+            return {"message": f"Usuário com o e-mail {usuario.email} já existe no banco de dados"}
+        else:
+            session.add(usuario) 
+            session.commit()
+            session.refresh(usuario)
+            return {"message": f"Usuário {usuario.nome} cadastrado com sucesso"}
+
 
 
 # Rota de procurar usuários

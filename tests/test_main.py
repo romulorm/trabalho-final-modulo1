@@ -43,9 +43,7 @@ def test_cad_usuario_valido():
     response = client.post("/usuarios/cadastro", json=payload)
 
     assert response.status_code == 200
-    assert "cadastrado com sucesso" in response.json()
-
-    
+    assert response.json()["message"] == "Usuário cadastrado com sucesso"
 
 
 def test_cadastro_usuario_email_invalido():
