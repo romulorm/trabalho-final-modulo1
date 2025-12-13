@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import EmailStr
 from src.models.usuario import Usuario
 from sqlmodel import select, Session
 from src.utils.database import engine
+from sqlalchemy.exc import IntegrityError
 
 router = APIRouter()
 
@@ -28,23 +29,28 @@ def get_users():
       responses = {
           200: {"description": "Usuário cadastrado com sucesso."},
           400: {"description": "Bad request: Usuário já existe!"},
+          409: {"description": "Erro de integridade: ID duplicado ou constraint violada"},
           422: {"description": "Bad request: Erro de validação do e-mail!"},
 } )
 def create_user(usuario: Usuario):
     """ Rota de cadastrar usuários """
-    with Session(engine) as session:
-        # Verifica se o usuário existe
-        statement = select(Usuario).where(Usuario.email == usuario.email)
-        results = session.exec(statement)
-        usuario_existente = results.first()
-        if usuario_existente:
-            return {"message": f"Usuário com o e-mail {usuario.email} já existe no banco de dados"}
-        else:
-            session.add(usuario) 
-            session.commit()
-            session.refresh(usuario)
-            return {"message": f"Usuário {usuario.nome} cadastrado com sucesso"}
-
+    try:
+        with Session(engine) as session:
+            # Verifica se o usuário existe
+            statement = select(Usuario).where(Usuario.email == usuario.email)
+            results = session.exec(statement)
+            usuario_existente = results.first()
+            if usuario_existente:
+                return {"message": f"Usuário com o e-mail {usuario.email} já existe no banco de dados"}
+            else:
+                session.add(usuario) 
+                session.commit()
+                session.refresh(usuario)
+                return {"message": f"Usuário {usuario.nome} cadastrado com sucesso"}
+    except IntegrityError as e:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, detail="Erro de integridade: ID duplicado ou constraint violada"
+        )
 
 
 # Rota de procurar usuários
