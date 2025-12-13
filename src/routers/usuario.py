@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import EmailStr
 from src.models.usuario import Usuario
+from src.schemas.usuario import UsuarioCreate
 from sqlmodel import select, Session
 from src.utils.database import engine
 from sqlalchemy.exc import IntegrityError
@@ -32,7 +33,7 @@ def get_users():
           409: {"description": "Erro de integridade: ID duplicado ou constraint violada"},
           422: {"description": "Bad request: Erro de validação do e-mail!"},
 } )
-def create_user(usuario: Usuario):
+def create_user(usuario: UsuarioCreate):
     """ Rota de cadastrar usuários """
     try:
         with Session(engine) as session:
