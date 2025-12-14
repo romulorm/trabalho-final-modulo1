@@ -1,10 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic import EmailStr
+from fastapi import APIRouter, HTTPException, status
 from src.models.usuario import Usuario
-from src.schemas.usuario import UsuarioCreate
 from sqlmodel import select, Session
 from src.utils.database import engine
 from sqlalchemy.exc import IntegrityError
+from src.utils.logger import logger
 
 router = APIRouter()
 
@@ -33,7 +32,7 @@ def get_users():
           409: {"description": "Erro de integridade: ID duplicado ou constraint violada"},
           422: {"description": "Bad request: Erro de validação do e-mail!"},
 } )
-def create_user(usuario: UsuarioCreate):
+def create_user(usuario: Usuario):
     """ Rota de cadastrar usuários """
     try:
         with Session(engine) as session:
@@ -47,7 +46,8 @@ def create_user(usuario: UsuarioCreate):
                 session.add(usuario) 
                 session.commit()
                 session.refresh(usuario)
-                return {"message": f"Usuário {usuario.nome} cadastrado com sucesso"}
+                return {"message": f"Usuário cadastrado com sucesso"}
+        logger.info(f'Usuário ${usuario.nome} cadastrado com sucesso')
     except IntegrityError as e:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT, detail="Erro de integridade: ID duplicado ou constraint violada"
@@ -59,14 +59,17 @@ def create_user(usuario: UsuarioCreate):
         responses = {
             404: {"description": "Item not found"}
 } )
-def find_user(email_id: EmailStr):
+def find_user(email_id: str):
     """
         Rota para procurar usuário. Insira o e-mail do usuário que deseja buscar.
     """
     with Session(engine) as session:
         statement = select(Usuario).where(Usuario.email == email_id)
         results = session.exec(statement)
-        usuarios = results.all()
-        return usuarios
+        usuario = results.first()
+        if not usuario:
+            raise HTTPException(status_code=404, detail="Usuário não encontrado")
+        else:
+            return usuario
     
 

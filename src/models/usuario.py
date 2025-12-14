@@ -8,4 +8,4 @@ class Usuario(SQLModel, table=True):
     nome: str = Field(index=True)
     email: str = Field(index=True, unique=True, sa_type=AutoString)
     idade: int = Field(default=18)
-    ativo: int = Field(default=1)
+    ativo: bool = Field(default=True)

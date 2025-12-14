@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from src.utils.database import create_db
 from src.routers import usuario
-import logging
+from src.utils.logger import logger
 
 # -----------------------------
 # FASTAPI configuration
@@ -50,15 +50,6 @@ app.add_middleware(
     allow_headers=["*"],            # Permite todos os cabeçalhos HTTP
 )
 
-# -----------------------------
-# LOGGING configuration
-# -----------------------------
-
-# Configure logging to a file
-logging.basicConfig(filename='logs/app.log', level=logging.INFO,
-                    format='%(asctime)s - %(levelname)s - %(message)s')
- 
-logger = logging.getLogger(__name__)
 
 logger.info('****************** API Started *****************')
 

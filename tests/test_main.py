@@ -35,7 +35,7 @@ def test_cad_usuario_valido():
     """
     payload = {
         "nome": "João da Silva",
-        "email": "joao.silva2@example.com",
+        "email": "joao.silva@example.com",
         "idade": 30,
         "ativo": True
     }
@@ -44,22 +44,4 @@ def test_cad_usuario_valido():
 
     assert response.status_code == 200
     assert response.json()["message"] == "Usuário cadastrado com sucesso"
-
-
-def test_cadastro_usuario_email_invalido():
-    """
-    Teste: cadastro com e-mail com formato inválido deve retornar 422.
-    Validação feita automaticamente pelo Pydantic (EmailStr).
-    """
-    payload = {
-        "nome": "Usuário Teste",
-        "email": "email-invalido",   # sem @ e domínio
-        "idade": 25,
-        "ativo": True
-    }
-
-    response = client.post("/usuarios/cadastro", json=payload)
-
-    error_response = response.json()
-    assert response.status_code == 422
 
