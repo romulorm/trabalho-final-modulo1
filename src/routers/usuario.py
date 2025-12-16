@@ -12,7 +12,7 @@ router = APIRouter()
 @router.get("/usuarios", summary="Listar usuários", description="Retorna todos os usuários cadastrados no banco de dados.",
       responses = {
           200: {"description": "Usuários retornados"},
-          204: {"description": "Sem usuários cadastrados"}
+          404: {"description": "Sem usuários cadastrados"}
 } )
 def get_users():
     """ Rota para retornar todos os usuários """
@@ -21,7 +21,7 @@ def get_users():
         results = session.exec(statement)
         usuarios = results.all()
         if not usuarios:
-            return JSONResponse(status_code=204, content="Sem usuários cadastrados")
+            return JSONResponse(status_code=404, content="Sem usuários cadastrados")
         else:
             return usuarios
 
