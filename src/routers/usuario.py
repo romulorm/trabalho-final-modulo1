@@ -21,7 +21,7 @@ def get_users():
         results = session.exec(statement)
         usuarios = results.all()
         if not usuarios:
-            return JSONResponse(status_code=404, content="Sem usuários cadastrados")
+            return JSONResponse(status_code=404, content={"message": "Sem usuários cadastrados"})
         else:
             return usuarios
 
@@ -43,13 +43,13 @@ def create_user(usuario: Usuario):
             results = session.exec(statement)
             usuario_existente = results.first()
             if usuario_existente:
-                return JSONResponse(status_code=400, content="E-mail já utilizado em outro cadastro")
+                return JSONResponse(status_code=400, content={"message": "E-mail já utilizado em outro cadastro"})
             else:
                 session.add(usuario) 
                 session.commit()
                 session.refresh(usuario)
                 logger.info(f'Usuário ${usuario.nome} cadastrado com sucesso')
-                return JSONResponse(status_code=201, content="Usuário cadastrado com sucesso")
+                return JSONResponse(status_code=201, content={"message": "Usuário cadastrado com sucesso"})
     except IntegrityError as e:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT, detail="Erro de integridade: ID duplicado ou constraint violada"
@@ -71,7 +71,7 @@ def find_user(email_id: str):
         results = session.exec(statement)
         usuario = results.first()
         if not usuario:
-            return JSONResponse(status_code=404, content="Usuário não localizado")
+            return JSONResponse(status_code=404, content={"message": "Usuário não localizado"})
         else:
             return usuario
     
