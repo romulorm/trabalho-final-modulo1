@@ -71,7 +71,7 @@ def find_user(email_id: str):
         results = session.exec(statement)
         usuario = results.first()
         if not usuario:
-            return JSONResponse(status_code=404, content="Sem usuários cadastrados")
+            return JSONResponse(status_code=404, content="Usuário não localizado")
         else:
             return usuario
     
