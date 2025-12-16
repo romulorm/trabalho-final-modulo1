@@ -77,13 +77,13 @@ pip install -r requirements.txt
 ### 3. Inicie a aplicação
 ```bash
 cd trabalho-final-modulo1
-uvicorn src.api.main:app --port 8001
+uvicorn src.api.main:app --port 8002
 ```
 
 ## 🚀 Acesso ao Swagger do sistema
 
 ### 1. Abra o navegador de Internet
-Acesse o endereço eletrônico http://127.0.0.1:8001/docs para testar os endpoints.
+Acesse o endereço eletrônico http://127.0.0.1:8002/docs para testar os endpoints.
 
 ## ✅ Teste a aplicação
 
@@ -110,7 +110,7 @@ $env:PYTHONPATH='.' ; pytest -v -rP
 ## 🐳 Docker
 ```bash
 docker build -t trab-mod1-backend:latest .
-docker run -p 8001:8001 trab-mod1-backend:latest
+docker run -p 8002:8002 trab-mod1-backend:latest
 ```
 
 ## 👀 Frontend da aplicação
