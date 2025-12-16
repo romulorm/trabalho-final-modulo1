@@ -42,6 +42,21 @@ def test_cad_usuario_valido():
 
     response = client.post("/usuarios/cadastro", json=payload)
 
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert response.json()["message"] == "Usuário cadastrado com sucesso"
 
+def test_cad_usuario_existente():
+    """
+    Teste: Cadastro com e-mail já existente.
+    """
+    payload = {
+        "nome": "João da Silva",
+        "email": "joao.silva@example.com",
+        "idade": 30,
+        "ativo": True
+    }
+
+    response = client.post("/usuarios/cadastro", json=payload)
+
+    assert response.status_code == 400
+    assert response.json()["message"] == "E-mail já utilizado em outro cadastro"
