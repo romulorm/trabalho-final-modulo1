@@ -40,7 +40,7 @@ def test_cad_usuario_valido():
         "ativo": 1
     }
 
-    response = client.post("/usuarios/cadastro", json=payload)
+    response = client.post("/usuarios/cadastrar", json=payload)
     
     assert response.status_code == 201
     assert response.json()["message"] == "Usuário cadastrado com sucesso"
@@ -56,7 +56,18 @@ def test_cad_usuario_existente():
         "ativo": 1
     }
 
-    response = client.post("/usuarios/cadastro", json=payload)
+    response = client.post("/usuarios/cadastrar", json=payload)
 
     assert response.status_code == 400
     assert response.json()["message"] == "E-mail já utilizado em outro cadastro"
+
+def test_remover_usuario():
+    """
+    Teste: Excluir usuário já existente.
+    """
+    payload = "pytest@example.com"
+
+    response = client.delete(f"/usuarios/remover/{payload}")
+
+    assert response.status_code == 200
+    assert response.json()["message"] == "Usuário removido com sucesso"
