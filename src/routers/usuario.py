@@ -76,6 +76,32 @@ def find_user(email_id: str):
             return usuario
     
 
+# Rota de editar usuário
+@router.patch("/usuarios/editar/{email_id}", summary="Editar usuário", description="Edita os dados de um usuário",
+        responses = {
+            200: {"description": "Usuário editado com sucesso"},
+            404: {"description": "Usuário não localizado"}
+} )
+def edit_user(email_id: str, usuario_editado: Usuario):
+    """ Rota para editar usuário. Insira o e-mail do usuário que deseja editar. """
+    with Session(engine) as session:
+        statement = select(Usuario).where(Usuario.email == email_id)
+        results = session.exec(statement)
+        usuario = results.first()
+        if not usuario:
+            return JSONResponse(status_code=404, content={"message": "Usuário não localizado"})
+        else:
+            usuario.nome = usuario_editado.nome
+            usuario.email = usuario_editado.email
+            usuario.idade = usuario_editado.idade
+            usuario.ativo = usuario_editado.ativo
+            session.add(usuario)
+            session.commit()
+            session.refresh(usuario)
+            logger.info(f'Usuário {usuario.nome} editado com sucesso')
+            return JSONResponse(status_code=200, content={"message": "Usuário editado com sucesso"})
+
+
 # Rota de deletar usuário
 @router.delete("/usuarios/remover/{email_id}", summary="Remover usuário", description="Remove um usuário do banco de dados pelo seu e-mail.",
         responses = {
@@ -95,3 +121,4 @@ def delete_user(email_id: str):
             session.commit()
             logger.info(f'Usuário {usuario.nome} deletado com sucesso')
             return JSONResponse(status_code=200, content={"message": "Usuário removido com sucesso"})
+        
