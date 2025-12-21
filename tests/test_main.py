@@ -61,6 +61,17 @@ def test_cad_usuario_existente():
     assert response.status_code == 400
     assert response.json()["message"] == "E-mail já utilizado em outro cadastro"
 
+
+def test_procurar_usuario_inexistente():
+    """
+    Teste: Procurar usuário inexistente.
+    """
+    payload = "inexistente@pytest.com"
+
+    response = client.get(f"/usuarios/procurar/{payload}")
+    assert response.status_code == 404
+    assert response.json()["message"] == "Usuário não localizado"
+
 def test_remover_usuario():
     """
     Teste: Excluir usuário já existente.

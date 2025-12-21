@@ -119,6 +119,6 @@ def delete_user(email_id: str):
         else:
             session.delete(usuario)
             session.commit()
-            logger.info(f'Usuário {usuario.nome} deletado com sucesso')
+            logger.info(f'Usuário {usuario.nome} removido com sucesso')
             return JSONResponse(status_code=200, content={"message": "Usuário removido com sucesso"})
         
