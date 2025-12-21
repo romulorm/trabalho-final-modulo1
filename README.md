@@ -114,4 +114,5 @@ docker run -p 8001:8001 trab-mod1-backend:latest
 ```
 
 ## 👀 Frontend da aplicação
+Funciona somente com a branch SQLITE
 https://github.com/romulorm/trabalho-final-modulo1-frontend.git
