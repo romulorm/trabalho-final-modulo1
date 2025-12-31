@@ -83,7 +83,7 @@ uvicorn src.api.main:app --port 8002
 ## 🚀 Acesso ao Swagger do sistema
 
 ### 1. Abra o navegador de Internet
-Acesse o endereço eletrônico http://127.0.0.1:8002/docs para testar os endpoints.
+Acesse o endereço eletrônico http://localhost:8002/docs para testar os endpoints.
 
 ## ✅ Teste a aplicação
 
@@ -107,11 +107,12 @@ No Windows (PowerShell):
 $env:PYTHONPATH='.' ; pytest -v -rP
 ```
 
-## 🐳 Docker
-```bash
-docker build -t trab-mod1-backend:latest .
-docker run -p 8002:8002 trab-mod1-backend:latest
+## 🐳 Docker usage
+```sh
+docker-compose up -d
 ```
+Acesse o endereço eletrônico http://localhost:5173/ para testar a aplicação pelo Frontend.
 
-## 👀 Frontend da aplicação
+
+## 👀 Repositório do Frontend da aplicação
 https://github.com/romulorm/trabalho-final-modulo1-frontend.git
