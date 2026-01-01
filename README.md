@@ -111,6 +111,7 @@ $env:PYTHONPATH='.' ; pytest -v -rP
 ```sh
 docker-compose up -d
 ```
+Acesse o endereço eletrônico http://localhost:8002/docs para testar a aplicação pelo Swagger.
 Acesse o endereço eletrônico http://localhost:5173/ para testar a aplicação pelo Frontend.
 
 
