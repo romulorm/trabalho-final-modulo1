@@ -26,7 +26,7 @@ def test_root():
     assert response.status_code == 200
     data = response.json()
     assert "status" in data
-    assert "versao" in data
+    assert "version" in data
 
 
 def test_cad_usuario_valido():
@@ -34,38 +34,51 @@ def test_cad_usuario_valido():
     Teste: Cadastro de usuário válido.
     """
     payload = {
-        "nome": "João da Silva",
-        "email": "joao.silva@example.com",
+        "nome": "Pytest User",
+        "email": "pytest@example.com",
         "idade": 30,
-        "ativo": True
+        "ativo": 1
     }
 
-    response = client.post("/usuario/cadastro", json=payload)
-
-    assert response.status_code == 200
-    assert "cadastrado com sucesso" in response.json().lower()
-
+    response = client.post("/usuarios/cadastrar", json=payload)
     
+    assert response.status_code == 201
+    assert response.json()["message"] == "Usuário cadastrado com sucesso"
 
-
-def test_cadastro_usuario_email_invalido():
+def test_cad_usuario_existente():
     """
-    Teste: cadastro com e-mail com formato inválido deve retornar 422.
-    Validação feita automaticamente pelo Pydantic (EmailStr).
+    Teste: Cadastro com e-mail já existente.
     """
     payload = {
-        "nome": "Usuário Teste",
-        "email": "email-invalido",   # sem @ e domínio
-        "idade": 25,
-        "ativo": True
+        "nome": "Pytest User",
+        "email": "pytest@example.com",
+        "idade": 30,
+        "ativo": 1
     }
 
-    response = client.post("/usuario/cadastro", json=payload)
+    response = client.post("/usuarios/cadastrar", json=payload)
 
-    error_response = response.json()
-    assert response.status_code == 422
-    assert "detail" in error_response
-    assert len(error_response["detail"]) == 1
-    error_detail = error_response["detail"][0]
-    assert "value is not a valid email address" in error_detail["msg"]
+    assert response.status_code == 400
+    assert response.json()["message"] == "E-mail já utilizado em outro cadastro"
 
+
+def test_procurar_usuario_inexistente():
+    """
+    Teste: Procurar usuário inexistente.
+    """
+    payload = "inexistente@pytest.com"
+
+    response = client.get(f"/usuarios/procurar/{payload}")
+    assert response.status_code == 404
+    assert response.json()["message"] == "Usuário não localizado"
+
+def test_remover_usuario():
+    """
+    Teste: Excluir usuário já existente.
+    """
+    payload = "pytest@example.com"
+
+    response = client.delete(f"/usuarios/remover/{payload}")
+
+    assert response.status_code == 200
+    assert response.json()["message"] == "Usuário removido com sucesso"

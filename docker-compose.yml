@@ -1,0 +1,22 @@
+services:
+    backend:
+      image: romulorm/users-api-backend:latest
+      container_name: backend
+      ports:
+        - "8002:8002"
+      networks:
+        - users-api-network
+      restart: unless-stopped
+  
+    frontend:
+      image: romulorm/users-api-frontend:latest
+      container_name: frontend
+      ports:
+        - "5173:80"
+      networks:
+        - users-api-network
+      restart: unless-stopped
+
+networks:
+  users-api-network:
+    driver: bridge
